@@ -1,0 +1,30 @@
+body {
+    background-color: black;
+}
+
+.space {
+    background-image: url("img/space.png");
+    width: 80%;
+    height: 500px;
+    margin: auto;
+    position: relative;
+}
+
+.planet-area {
+    width: 40%;
+    height: 80%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.planet {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+}
+
+.rocket {
+    transform: rotate(45deg) scale(0.3);
+}
