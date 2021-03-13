@@ -12,24 +12,26 @@
         <img class="rocket" src="img/rocket.png" alt="Rocket"/>
     </div>
     <div class="control-panel">
-        <input type="text" value="Enter password to unlock">
-        <input type="button" value="OK">
-        <div class="check-buttons">
-            <input type="checkbox">
-            <input type="checkbox">
-            <input type="checkbox">
-            <input type="checkbox">
-            <input type="checkbox">
-            <input type="checkbox">
+        <div class="control-panel__inner">
+            <input type="password" placeholder="Enter password to unlock">
+            <input type="button" id="ok-button" value="OK">
+            <div class="check-buttons">
+                <input type="checkbox">
+                <input type="checkbox">
+                <input type="checkbox">
+                <input type="checkbox">
+                <input type="checkbox">
+                <input type="checkbox">
+            </div>
+            <div class="levers">
+                <input type="range">
+                <input type="range">
+                <input type="range">
+                <input type="range">
+                <input type="range">
+            </div>
+            <input type="button" id="launch-button" value="Launch">
         </div>
-        <div class="levers">
-            <input type="range">
-            <input type="range">
-            <input type="range">
-            <input type="range">
-            <input type="range">
-        </div>
-        <input type="button" value="Launch">
     </div>
 </div>
 </body>

@@ -46,9 +46,10 @@ async function stageTest() {
             )return hs.wrong("There are some mismatches with suggested structure or elements naming in planet-area section")
 
             let controlPanel = document.getElementsByClassName('control-panel')[0];
-            if (!(controlPanel.children.length === 5 &&
-                controlPanel.getElementsByTagName('input').length === 14 &&
-                controlPanel.getElementsByTagName('div').length === 2
+            let controlPanelInner = Array.from(controlPanel.children)[0]
+            if (!(controlPanelInner.children.length === 5 &&
+                controlPanelInner.getElementsByTagName('input').length === 14 &&
+                controlPanelInner.getElementsByTagName('div').length === 2
             )) return hs.wrong("There are some mismatches with suggested structure or elements naming in control-panel section")
 
             return hs.correct()
@@ -85,11 +86,11 @@ async function stageTest() {
 
             return hs.correct();
         },
-        //testing background of the panel
+        //testing gradient background of the panel
         () => {
             let controlDeck = document.getElementsByClassName("control-panel")[0];
-            let controlDeckBgClr = window.getComputedStyle(controlDeck).backgroundColor;
-            if (!controlDeckBgClr) return hs.wrong("The element with class='control-panel' should have background-color.");
+            let controlDeckBgImg = window.getComputedStyle(controlDeck).backgroundImage;
+            if (!controlDeckBgImg.toLowerCase().includes('linear-gradient')) return hs.wrong("The element with class='control-panel' should have gradient background.");
 
             return hs.correct();
         },
@@ -123,6 +124,52 @@ async function stageTest() {
             })
 
             return hs.correct();
+        },
+        //testing password field
+        () => {
+            let controlPanelInner = document.getElementsByClassName('control-panel__inner')[0];
+            let msg = undefined;
+            for(let el of Array.from(controlPanelInner.children)){
+                if (el.tagName.toLowerCase() === 'input' && el.type.toLowerCase() === 'password') {
+                    let styles = window.getComputedStyle(el);
+                    if (styles.color && styles.border ) return  hs.correct()
+                    else return hs.wrong("Password field's border and text color should be changed");
+                }
+            }
+
+            return hs.wrong("Can't find password field");
+        },
+        //testing the background color of the "ok" and "launch" buttons
+        () => {
+            let controlPanelInner = document.getElementsByClassName('control-panel__inner')[0];
+            let counter = 0;
+            for(let el of Array.from(controlPanelInner.children)){
+                if (el.tagName.toLowerCase() === 'input' && (el.type.toLowerCase() === 'submit' || el.type.toLowerCase() === 'button')) {
+                    let styles = window.getComputedStyle(el);
+                    if (styles.backgroundColor) {
+                        counter++;
+                    }
+
+                }
+            }
+
+            return counter === 2
+                ? hs.correct()
+                : hs.wrong("Can't find 2 input fields with type=button or submit with changed background");
+        },
+        //testing the form of the launch button
+        () => {
+            let controlPanelInner = document.getElementsByClassName('control-panel__inner')[0];
+            for(let el of Array.from(controlPanelInner.children)){
+                if (el.tagName.toLowerCase() === 'input' && (el.type.toLowerCase() === 'submit' || el.type.toLowerCase() === 'button')) {
+                    let styles = window.getComputedStyle(el);
+                    if (styles.backgroundColor && styles.borderRadius) {
+                        return hs.correct();
+                    }
+                }
+            }
+
+            return hs.wrong("Can't find the input with type=button or submit with specified border-radius");
         }
     )
 

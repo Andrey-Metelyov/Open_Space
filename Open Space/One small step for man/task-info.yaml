@@ -206,6 +206,76 @@ files:
         }
     );
   learner_created: false
+- name: src/main.css
+  visible: true
+  text: |+
+    body {
+        background-color: black;
+    }
+
+    .space {
+        background-image: url("img/space.png");
+        width: 80%;
+        height: 500px;
+        margin: auto;
+        position: relative;
+    }
+
+    .planet-area {
+        width: 40%;
+        height: 80%;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
+
+    .control-panel {
+        position: absolute;
+        top: 30%;
+        right: 5%;
+        width: 40%;
+        text-align: center;
+        background-color: dimgray;
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+    .check-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    .levers {
+        display: flex;
+        justify-content: space-between;
+        margin: 20px;
+    }
+
+    input[type="range"] {
+        writing-mode: bt-lr;
+        -webkit-appearance: slider-vertical;
+        margin: 0;
+        width: 20px;
+    }
+
+    .planet {
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        left: 0;
+    }
+
+    .rocket {
+        transform: rotate(45deg) scale(0.3);
+    }
+
+  learner_created: true
 feedback_link: https://hyperskill.org/projects/143/stages/773/implement#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: Sat, 13 Mar 2021 08:16:52 UTC
 record: -1

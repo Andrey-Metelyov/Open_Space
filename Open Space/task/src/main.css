@@ -24,7 +24,14 @@ body {
     right: 5%;
     width: 40%;
     text-align: center;
-    background-color: dimgray;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: black;
+    background-image:
+            repeating-linear-gradient(45deg, transparent, transparent 15px, rgba(255,255,0,1) 15px, rgba(255,255,0,1) 30px);}
+
+.control-panel__inner {
+    background-color: #363636;
     padding: 10px;
     border-radius: 10px;
 }
@@ -48,6 +55,28 @@ input[type="range"] {
     -webkit-appearance: slider-vertical;
     margin: 0;
     width: 20px;
+}
+
+input[type="password"] {
+    background-color: inherit;
+    border-radius: 8px;
+    color: #7f7f7f;
+    border-color: yellow;
+}
+
+
+#ok-button {
+    background-color: yellow;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+#launch-button {
+    background-color: red;
+    border-radius: 100%;
+    border: white solid 3px;
+    color: white;
+    padding: 5px;
 }
 
 .planet {
