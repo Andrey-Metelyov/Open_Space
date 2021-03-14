@@ -91,6 +91,9 @@ input[type="password"] {
 }
 
 .rocket {
+    position: absolute;
+    z-index: 100;
+    top: 0px;
+    left: 100px;
     transform: rotate(45deg) scale(0.3);
 }
-

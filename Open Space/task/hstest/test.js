@@ -16,6 +16,7 @@ async function stageTest() {
 
     const page = await browser.newPage();
     await page.goto(pagePath);
+    await page.setDefaultNavigationTimeout(0);
 
     page.on('console', msg => console.log(msg.text()));
 
@@ -103,8 +104,11 @@ async function stageTest() {
         },
         //testing gradient background of the panel
         () => {
-            let controlDeck = document.getElementsByClassName("control-panel")[0];
-            let controlDeckBgImg = window.getComputedStyle(controlDeck).backgroundImage;
+            let controlDeck = document.getElementsByClassName("control-panel")
+            if (controlDeck.length === 0) {
+                return hs.wrong("Can't find element with class=\"control-panel\"");
+            }
+            let controlDeckBgImg = window.getComputedStyle(controlDeck[0]).backgroundImage;
             if (!controlDeckBgImg.toLowerCase().includes('linear-gradient')) return hs.wrong("The element with class='control-panel' should have gradient background.");
 
             return hs.correct();
@@ -142,11 +146,11 @@ async function stageTest() {
         },
         //testing password field
         () => {
-            let controlPanelInner = document.getElementsByClassName('control-panel__inner')[0];
+            let controlPanelInner = document.getElementsByClassName('control-panel__inner');
             if (controlPanelInner.length === 0) {
                 return hs.wrong("Can't find element with class=\"control-panel__inner\"");
             }
-            for(let el of Array.from(controlPanelInner.children)){
+            for(let el of Array.from(controlPanelInner[0].children)){
                 if (el.tagName.toLowerCase() === 'input' && el.type.toLowerCase() === 'password') {
                     let styles = window.getComputedStyle(el);
                     if (styles.color && styles.border ) return  hs.correct()
@@ -196,48 +200,138 @@ async function stageTest() {
                     return hs.wrong("Password field should be enabled.")
                 }
 
-                if(el.value.toLowerCase() === "ok" && el.disabled) {
-                        return hs.wrong("Ok button should be enabled.");
+                if((el.value.toLowerCase() === "ok" || el.innerText.toLowerCase() === "ok") && el.disabled) {
+                    return hs.wrong("Ok button should be enabled.");
                 }
 
                 if (el.type.toLowerCase() !== "password" &&
-                    el.value.toLowerCase() !== "ok"  && !el.disabled) {
-                        return hs.wrong("All inputs except password and the ok button should be disabled.");
+                    (el.value.toLowerCase() !== "ok" && el.innerText.toLowerCase() !== "ok")  && !el.disabled) {
+                    return hs.wrong("All inputs except password and the ok button should be disabled.");
                 }
             }
 
             return hs.correct();
         },
+        //testing that all inputs except password and the "ok" button sre enabled
         () => {
             let controlPanelInner = document.getElementsByClassName('control-panel__inner')[0];
             let allInputs = Array.from(controlPanelInner.getElementsByTagName('input'));
             let passwordEl =allInputs.filter( el => el.type.toLowerCase() === "password");
+            let okBtn = allInputs.filter(el => (el.value.toLowerCase() === "ok" || el.innerText.toLowerCase() === "ok"));
 
             passwordEl[0].value = "TrustNo1";
+            okBtn[0].click();
+
             window.setTimeout(() => {
                 for (el of allInputs) {
                     if(el.type.toLowerCase() === "password" && !el.disabled) {
                         return hs.wrong("Password field should be disabled.")
                     }
 
-                    if(el.value.toLowerCase() === "ok" && !el.disabled) {
+                    if((el.value.toLowerCase() === "ok" || el.innerText.toLowerCase() === "ok") && !el.disabled) {
                         return hs.wrong("Ok button should be disabled.");
                     }
 
                     if (el.type.toLowerCase() !== "password" &&
-                        el.value.toLowerCase() !== "ok"  && el.disabled) {
+                        (el.value.toLowerCase() === "ok" || el.innerText.toLowerCase() === "ok")  && el.disabled) {
                         return hs.wrong("All inputs except password and the ok button should be enabled.");
                     }
                 }
             }, 1000)
 
             return hs.correct();
-        }
+        },
+        //testing that the launch button disabled with one checkbox and one lever
+        () => {
+            let controlPanelInner = document.getElementsByClassName('control-panel__inner')[0];
+            let allInputs = Array.from(controlPanelInner.getElementsByTagName('input'));
+            let passwordEl = allInputs.filter(el => el.type.toLowerCase() === "password");
+            let checkBoxes = allInputs.filter(el => el.type.toLowerCase() === "checkbox");
+            let levers = allInputs.filter(el => el.type.toLowerCase() === "range")
+            let okBtn = allInputs.filter(el => (el.value.toLowerCase() === "ok" || el.innerText.toLowerCase() === "ok"))
 
+            passwordEl[0].value = "TrustNo1";
+            okBtn[0].click();
+            checkBoxes[0].checked = true;
+            levers[0].value = 100;
+
+            let launch = allInputs.filter(el => el.value.toLowerCase() === "launch");
+            return launch[0].disabled
+                ? hs.correct()
+                : hs.wrong("Launch button should be disabled when not all checkboxes are picked or not all levers are set to maximum.");
+        },
+        //testing that the launch button enabled with all checkboxes and all levers
+        () => {
+            let controlPanelInner = document.getElementsByClassName('control-panel__inner')[0];
+            let allInputs = Array.from(controlPanelInner.getElementsByTagName('input'));
+            let passwordEl = allInputs.filter(el => el.type.toLowerCase() === "password");
+            let checkBoxes = allInputs.filter(el => el.type.toLowerCase() === "checkbox");
+            let levers = allInputs.filter(el => el.type.toLowerCase() === "range")
+            let okBtn = allInputs.filter(el => (el.value.toLowerCase() === "ok" || el.innerText.toLowerCase() === "ok"))
+
+            passwordEl[0].value = "TrustNo1";
+            okBtn[0].click();
+
+            checkBoxes.forEach(checkBox => {
+                checkBox.value = 'on';
+                checkBox.checked = true;
+            });
+            levers.forEach(lever => lever.value = "100");
+            if (levers[0].onchange === null) {
+                return hs.wrong("The function, which should be called after any change of controls state, wasn't implemented.");
+            }
+            levers[0].onchange();
+
+            let launch = allInputs.filter(el => (el.value.toLowerCase() === "launch" || el.innerText.toLowerCase() === "launch") )[0];
+            return !launch.disabled ? hs.correct()
+                : hs.wrong("The launch button should be enabled when all checkboxes are checked " +
+                    "and all levers are specified by maximum.")
+        },
+        async () => {
+            let controlPanelInner = document.getElementsByClassName('control-panel__inner')[0];
+            let allInputs = Array.from(controlPanelInner.getElementsByTagName('input'));
+            let passwordEl = allInputs.filter(el => el.type.toLowerCase() === "password");
+            let checkBoxes = allInputs.filter(el => el.type.toLowerCase() === "checkbox");
+            let levers = allInputs.filter(el => el.type.toLowerCase() === "range")
+            let okBtn = allInputs.filter(el => (el.value.toLowerCase() === "ok" || el.innerText.toLowerCase() === "ok"))
+
+            passwordEl[0].value = "TrustNo1";
+            if (okBtn[0].click === null) {
+                return hs.wrong("The function which should be called after click on the launch button wasn't implemented.");
+            }
+            okBtn[0].click();
+
+            checkBoxes.forEach(checkBox => {
+                checkBox.value = 'on';
+                checkBox.checked = true;
+            });
+            levers.forEach(lever => lever.value = "100");
+            levers[0].onchange();
+
+            let rocket = document.getElementsByClassName('rocket')[0]
+            if (rocket.length === 0) {
+                return hs.wrong("Can't find element with class=\"rocket\"");
+            }
+            this.start = rocket[0].getBoundingClientRect();
+            this.end = this.start;
+            let launch = allInputs.filter(el => (el.value.toLowerCase() === "launch" || el.innerText.toLowerCase() === "launch") )[0];
+            launch.click();
+
+            this.end = await new Promise (resolve => {
+                setTimeout(() => {
+                     resolve(rocket[0].getBoundingClientRect());
+                }, 2000);
+            })
+
+            return this.start !== this.end
+                ? hs.correct()
+                : hs.wrong("The rocket animation does not work.")
+        }
     )
 
     await browser.close();
     return result;
+
 }
 
 jest.setTimeout(30000);

@@ -4,27 +4,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="main.css"/>
     <title>Open Space</title>
-    <script>
-        function DisableButton() {
-            document.getElementById("check-buttons").querySelectorAll("input").forEach(el => el.disabled = true);
-            document.getElementById("levers").querySelectorAll("input").forEach(el => el.disabled = true);
-            document.getElementById("launch-button").disabled = true;
-            console.log("DisableButton");
-        }
-        window.onload = DisableButton;
-        document.getElementById("ok-button").addEventListener("click", function () {
-            console.log("ok-button clicked");
-            let passwordInput = document.getElementById("password");
-            let password = passwordInput.value;
-            if (password === "TrustNo1") {
-                document.getElementById("check-buttons").querySelectorAll("input").forEach(el => el.disabled = false);
-                document.getElementById("levers").querySelectorAll("input").forEach(el => el.disabled = false);
-                document.getElementById("launch-button").disabled = false;
-                passwordInput.disabled = true;
-                document.getElementById("ok-button").disabled = true;
-            }
-        });
-    </script>
+    <script type="text/javascript" src="main.js"></script>
 </head>
 <body>
 <div class="space">

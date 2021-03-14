@@ -363,6 +363,134 @@ files:
         }
     );
   learner_created: false
+- name: src/main.css
+  visible: true
+  text: |+
+    body {
+        background-color: black;
+    }
+
+    .space {
+        background-image: url("img/space.png");
+        width: 80%;
+        height: 500px;
+        margin: auto;
+        position: relative;
+    }
+
+    .planet-area {
+        width: 40%;
+        height: 80%;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
+
+    .control-panel {
+        position: absolute;
+        top: 30%;
+        right: 5%;
+        width: 40%;
+        text-align: center;
+        padding: 10px;
+        border-radius: 10px;
+        background-color: black;
+        background-image:
+                repeating-linear-gradient(45deg, transparent, transparent 15px, rgba(255,255,0,1) 15px, rgba(255,255,0,1) 30px);}
+
+    .control-panel__inner {
+        background-color: #363636;
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+    .check-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    .levers {
+        display: flex;
+        justify-content: space-between;
+        margin: 20px;
+    }
+
+    input[type="range"] {
+        writing-mode: bt-lr;
+        -webkit-appearance: slider-vertical;
+        margin: 0;
+        width: 20px;
+    }
+
+    input[type="password"] {
+        background-color: inherit;
+        border-radius: 8px;
+        color: #7f7f7f;
+        border-color: yellow;
+    }
+
+
+    #ok-button {
+        background-color: yellow;
+        border-radius: 8px;
+        font-weight: bold;
+    }
+
+    #launch-button {
+        background-color: red;
+        border-radius: 100%;
+        border: white solid 3px;
+        color: white;
+        padding: 5px;
+    }
+
+    #launch-button:disabled {
+        background-color: gray;
+    }
+
+    .planet {
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        left: 0;
+    }
+
+    .rocket {
+        transform: rotate(45deg) scale(0.3);
+    }
+
+  learner_created: true
+- name: src/main.js
+  visible: true
+  learner_created: true
 feedback_link: https://hyperskill.org/projects/143/stages/775/implement#comment
-status: Unchecked
+status: Failed
+feedback:
+  message: |-
+    Fatal error in test #15, please send the report to support@hyperskill.org
+
+    Error: Evaluation failed: TypeError: Cannot read property 'getBoundingClientRect' of undefined
+        at __puppeteer_evaluation_script__:26:32
+        at ExecutionContext._evaluateInternal (D:\\Projects\\Open Space\\node_modules\\puppeteer\\lib\\ExecutionContext.js:122:13)
+        at processTicksAndRejections (internal/process/task_queues.js:93:5)
+        at ExecutionContext.evaluate (D:\\Projects\\Open Space\\node_modules\\puppeteer\\lib\\ExecutionContext.js:48:12)
+        at Object.testPage (D:\\Projects\\Open Space\\node_modules\\hs-test-web\\stageTest.js:259:22)
+        at stageTest (D:\\Projects\\Open Space\\Open Space\\task\\hstest\\test.js:25:18)
+        at Object.<anonymous> (D:\\Projects\\Open Space\\Open Space\\task\\hstest\\test.js:339:22)
+      -- ASYNC --
+        at ExecutionContext.<anonymous> (D:\\Projects\\Open Space\\node_modules\\puppeteer\\lib\\helper.js:111:15)
+        at DOMWorld.evaluate (D:\\Projects\\Open Space\\node_modules\\puppeteer\\lib\\DOMWorld.js:112:20)
+        at processTicksAndRejections (internal/process/task_queues.js:93:5)
+      -- ASYNC --
+        at Frame.<anonymous> (D:\\Projects\\Open Space\\node_modules\\puppeteer\\lib\\helper.js:111:15)
+        at Page.evaluate (D:\\Projects\\Open Space\\node_modules\\puppeteer\\lib\\Page.js:860:43)
+        at Page.<anonymous> (D:\\Projects\\Open Space\\node_modules\\puppeteer\\lib\\helper.js:112:23)
+        at Object.testPage (D:\\Projects\\Open Space\\node_modules\\hs-test-web\\stageTest.js:259:33)
+        at processTicksAndRejections (internal/process/task_queues.js:93:5)
+        at stageTest (D:\\Projects\\Open Space\\Open Space\\task\\hstest\\test.js:25:18)
+        at Object.<anonymous> (D:\\Projects\\Open Space\\Open Space\\task\\hstest\\test.js:339:22)
+  time: Sun, 14 Mar 2021 16:25:45 UTC
 record: -1
