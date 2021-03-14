@@ -56,16 +56,22 @@ files:
                         space.children[1].className === 'planet-area' && space.children[0].className === 'control-panel'))
                 ) return hs.wrong("There are some mismatches with suggested structure or elements naming on the space section level")
 
-                let planetArea = document.getElementsByClassName('planet-area')[0]
-                if (!(planetArea.children.length === 2 &&
-                    planetArea.children[0].tagName.toLowerCase() === 'img' &&
-                    planetArea.children[1].tagName.toLowerCase() === 'img' && (
-                        planetArea.children[0].className === 'planet' && planetArea.children[1].className === 'rocket' ||
-                        planetArea.children[1].className === 'planet' && planetArea.children[0].className === 'rocket'))
-                )return hs.wrong("There are some mismatches with suggested structure or elements naming in planet-area section")
+                let planetArea = document.getElementsByClassName('planet-area')
+                if (planetArea.length === 0) {
+                    return hs.wrong("Can't find element with class=\"planet-area\"");
+                }
+                if (!(planetArea[0].children.length === 2 &&
+                    planetArea[0].children[0].tagName.toLowerCase() === 'img' &&
+                    planetArea[0].children[1].tagName.toLowerCase() === 'img' && (
+                        planetArea[0].children[0].className === 'planet' && planetArea[0].children[1].className === 'rocket' ||
+                        planetArea[0].children[1].className === 'planet' && planetArea[0].children[0].className === 'rocket'))
+                ) return hs.wrong("There are some mismatches with suggested structure or elements naming in planet-area section")
 
-                let controlPanel = document.getElementsByClassName('control-panel')[0];
-                let controlPanelInner = Array.from(controlPanel.children)[0]
+                let controlPanel = document.getElementsByClassName('control-panel');
+                if (controlPanel.length === 0) {
+                    return hs.wrong("Can't find element with class=\"control-panel\"");
+                }
+                let controlPanelInner = Array.from(controlPanel[0].children)[0]
                 if (!(controlPanelInner.children.length === 5 &&
                     controlPanelInner.getElementsByTagName('input').length === 14 &&
                     controlPanelInner.getElementsByTagName('div').length === 2
@@ -76,6 +82,9 @@ files:
             //testing types of the check-buttons inputs
             () => {
                 let checkBtnsDiv = document.getElementsByClassName("check-buttons");
+                if (checkBtnsDiv.length === 0) {
+                    return hs.wrong("Can't find element with class=\"check-buttons\"");
+                }
                 let checkBtns = Array.from(checkBtnsDiv[0].children);
                 checkBtns.forEach( el => {
                     if (el.tagName.toLowerCase() !== 'input' || el.type.toLowerCase() !== 'checkbox') {
@@ -88,6 +97,9 @@ files:
             //testing types of the levers inputs
             () => {
                 let leversDiv = document.getElementsByClassName("levers");
+                if (leversDiv.length === 0) {
+                    return hs.wrong("Can't find element with class=\"levers\"");
+                }
                 let leversInputs = Array.from(leversDiv[0].children);
                 leversInputs.forEach( el => {
                     if (el.tagName.toLowerCase() !== 'input' || el.type.toLowerCase() !== 'range') {
@@ -100,6 +112,9 @@ files:
             //testing background of space
             () => {
                 let space = document.getElementsByClassName("space");
+                if (space.length === 0) {
+                    return hs.wrong("Can't find element with class=\"space\"");
+                }
                 let spaceBg = window.getComputedStyle(space[0]).backgroundImage;
                 if (!spaceBg) return hs.wrong("The element with class='space' should have background-image.");
 
@@ -147,7 +162,9 @@ files:
             //testing password field
             () => {
                 let controlPanelInner = document.getElementsByClassName('control-panel__inner')[0];
-                let msg = undefined;
+                if (controlPanelInner.length === 0) {
+                    return hs.wrong("Can't find element with class=\"control-panel__inner\"");
+                }
                 for(let el of Array.from(controlPanelInner.children)){
                     if (el.tagName.toLowerCase() === 'input' && el.type.toLowerCase() === 'password') {
                         let styles = window.getComputedStyle(el);
@@ -251,6 +268,105 @@ files:
         }
     );
   learner_created: false
+- name: src/main.css
+  visible: true
+  text: |+
+    body {
+        background-color: black;
+    }
+
+    .space {
+        background-image: url("img/space.png");
+        width: 80%;
+        height: 500px;
+        margin: auto;
+        position: relative;
+    }
+
+    .planet-area {
+        width: 40%;
+        height: 80%;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
+
+    .control-panel {
+        position: absolute;
+        top: 30%;
+        right: 5%;
+        width: 40%;
+        text-align: center;
+        padding: 10px;
+        border-radius: 10px;
+        background-color: black;
+        background-image:
+                repeating-linear-gradient(45deg, transparent, transparent 15px, rgba(255,255,0,1) 15px, rgba(255,255,0,1) 30px);}
+
+    .control-panel__inner {
+        background-color: #363636;
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+    .check-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    .levers {
+        display: flex;
+        justify-content: space-between;
+        margin: 20px;
+    }
+
+    input[type="range"] {
+        writing-mode: bt-lr;
+        -webkit-appearance: slider-vertical;
+        margin: 0;
+        width: 20px;
+    }
+
+    input[type="password"] {
+        background-color: inherit;
+        border-radius: 8px;
+        color: #7f7f7f;
+        border-color: yellow;
+    }
+
+
+    #ok-button {
+        background-color: yellow;
+        border-radius: 8px;
+        font-weight: bold;
+    }
+
+    #launch-button {
+        background-color: red;
+        border-radius: 100%;
+        border: white solid 3px;
+        color: white;
+        padding: 5px;
+    }
+
+    .planet {
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        left: 0;
+    }
+
+    .rocket {
+        transform: rotate(45deg) scale(0.3);
+    }
+
+  learner_created: true
 feedback_link: https://hyperskill.org/projects/143/stages/774/implement#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: Sun, 14 Mar 2021 05:01:29 UTC
 record: -1

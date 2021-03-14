@@ -58,16 +58,22 @@ files:
                         space.children[1].className === 'planet-area' && space.children[0].className === 'control-panel'))
                 ) return hs.wrong("There are some mismatches with suggested structure or elements naming on the space section level")
 
-                let planetArea = document.getElementsByClassName('planet-area')[0]
-                if (!(planetArea.children.length === 2 &&
-                    planetArea.children[0].tagName.toLowerCase() === 'img' &&
-                    planetArea.children[1].tagName.toLowerCase() === 'img' && (
-                        planetArea.children[0].className === 'planet' && planetArea.children[1].className === 'rocket' ||
-                        planetArea.children[1].className === 'planet' && planetArea.children[0].className === 'rocket'))
-                )return hs.wrong("There are some mismatches with suggested structure or elements naming in planet-area section")
+                let planetArea = document.getElementsByClassName('planet-area')
+                if (planetArea.length === 0) {
+                    return hs.wrong("Can't find element with class=\"planet-area\"");
+                }
+                if (!(planetArea[0].children.length === 2 &&
+                    planetArea[0].children[0].tagName.toLowerCase() === 'img' &&
+                    planetArea[0].children[1].tagName.toLowerCase() === 'img' && (
+                        planetArea[0].children[0].className === 'planet' && planetArea[0].children[1].className === 'rocket' ||
+                        planetArea[0].children[1].className === 'planet' && planetArea[0].children[0].className === 'rocket'))
+                ) return hs.wrong("There are some mismatches with suggested structure or elements naming in planet-area section")
 
-                let controlPanel = document.getElementsByClassName('control-panel')[0];
-                let controlPanelInner = Array.from(controlPanel.children)[0]
+                let controlPanel = document.getElementsByClassName('control-panel');
+                if (controlPanel.length === 0) {
+                    return hs.wrong("Can't find element with class=\"control-panel\"");
+                }
+                let controlPanelInner = Array.from(controlPanel[0].children)[0]
                 if (!(controlPanelInner.children.length === 5 &&
                     controlPanelInner.getElementsByTagName('input').length === 14 &&
                     controlPanelInner.getElementsByTagName('div').length === 2
@@ -78,6 +84,9 @@ files:
             //testing types of the check-buttons inputs
             () => {
                 let checkBtnsDiv = document.getElementsByClassName("check-buttons");
+                if (checkBtnsDiv.length === 0) {
+                    return hs.wrong("Can't find element with class=\"check-buttons\"");
+                }
                 let checkBtns = Array.from(checkBtnsDiv[0].children);
                 checkBtns.forEach( el => {
                     if (el.tagName.toLowerCase() !== 'input' || el.type.toLowerCase() !== 'checkbox') {
@@ -90,6 +99,9 @@ files:
             //testing types of the levers inputs
             () => {
                 let leversDiv = document.getElementsByClassName("levers");
+                if (leversDiv.length === 0) {
+                    return hs.wrong("Can't find element with class=\"levers\"");
+                }
                 let leversInputs = Array.from(leversDiv[0].children);
                 leversInputs.forEach( el => {
                     if (el.tagName.toLowerCase() !== 'input' || el.type.toLowerCase() !== 'range') {
@@ -102,6 +114,9 @@ files:
             //testing background of space
             () => {
                 let space = document.getElementsByClassName("space");
+                if (space.length === 0) {
+                    return hs.wrong("Can't find element with class=\"space\"");
+                }
                 let spaceBg = window.getComputedStyle(space[0]).backgroundImage;
                 if (!spaceBg) return hs.wrong("The element with class='space' should have background-image.");
 
@@ -109,8 +124,11 @@ files:
             },
             //testing gradient background of the panel
             () => {
-                let controlDeck = document.getElementsByClassName("control-panel")[0];
-                let controlDeckBgImg = window.getComputedStyle(controlDeck).backgroundImage;
+                let controlDeck = document.getElementsByClassName("control-panel")
+                if (controlDeck.length === 0) {
+                    return hs.wrong("Can't find element with class=\"control-panel\"");
+                }
+                let controlDeckBgImg = window.getComputedStyle(controlDeck[0]).backgroundImage;
                 if (!controlDeckBgImg.toLowerCase().includes('linear-gradient')) return hs.wrong("The element with class='control-panel' should have gradient background.");
 
                 return hs.correct();
@@ -148,8 +166,11 @@ files:
             },
             //testing password field
             () => {
-                let controlPanelInner = document.getElementsByClassName('control-panel__inner')[0];
-                for(let el of Array.from(controlPanelInner.children)){
+                let controlPanelInner = document.getElementsByClassName('control-panel__inner');
+                if (controlPanelInner.length === 0) {
+                    return hs.wrong("Can't find element with class=\"control-panel__inner\"");
+                }
+                for(let el of Array.from(controlPanelInner[0].children)){
                     if (el.tagName.toLowerCase() === 'input' && el.type.toLowerCase() === 'password') {
                         let styles = window.getComputedStyle(el);
                         if (styles.color && styles.border ) return  hs.correct()
@@ -308,20 +329,23 @@ files:
                 levers[0].onchange();
 
                 let rocket = document.getElementsByClassName('rocket')[0]
-                this.start = rocket.getBoundingClientRect();
+                if (rocket.length === 0) {
+                    return hs.wrong("Can't find element with class=\"rocket\"");
+                }
+                this.start = rocket[0].getBoundingClientRect();
                 this.end = this.start;
                 let launch = allInputs.filter(el => (el.value.toLowerCase() === "launch" || el.innerText.toLowerCase() === "launch") )[0];
                 launch.click();
 
                 this.end = await new Promise (resolve => {
                     setTimeout(() => {
-                         resolve(rocket.getBoundingClientRect());
+                         resolve(rocket[0].getBoundingClientRect());
                     }, 2000);
                 })
 
                 return this.start !== this.end
                     ? hs.correct()
-                    : hs.wrong("HHH")
+                    : hs.wrong("The rocket animation does not work.")
             }
         )
 

@@ -79,6 +79,10 @@ input[type="password"] {
     padding: 5px;
 }
 
+#launch-button:disabled {
+    background-color: gray;
+}
+
 .planet {
     position: absolute;
     width: 100%;

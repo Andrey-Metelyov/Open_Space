@@ -37,16 +37,22 @@ async function stageTest() {
                     space.children[1].className === 'planet-area' && space.children[0].className === 'control-panel'))
             ) return hs.wrong("There are some mismatches with suggested structure or elements naming on the space section level")
 
-            let planetArea = document.getElementsByClassName('planet-area')[0]
-            if (!(planetArea.children.length === 2 &&
-                planetArea.children[0].tagName.toLowerCase() === 'img' &&
-                planetArea.children[1].tagName.toLowerCase() === 'img' && (
-                    planetArea.children[0].className === 'planet' && planetArea.children[1].className === 'rocket' ||
-                    planetArea.children[1].className === 'planet' && planetArea.children[0].className === 'rocket'))
-            )return hs.wrong("There are some mismatches with suggested structure or elements naming in planet-area section")
+            let planetArea = document.getElementsByClassName('planet-area')
+            if (planetArea.length === 0) {
+                return hs.wrong("Can't find element with class=\"planet-area\"");
+            }
+            if (!(planetArea[0].children.length === 2 &&
+                planetArea[0].children[0].tagName.toLowerCase() === 'img' &&
+                planetArea[0].children[1].tagName.toLowerCase() === 'img' && (
+                    planetArea[0].children[0].className === 'planet' && planetArea[0].children[1].className === 'rocket' ||
+                    planetArea[0].children[1].className === 'planet' && planetArea[0].children[0].className === 'rocket'))
+            ) return hs.wrong("There are some mismatches with suggested structure or elements naming in planet-area section")
 
-            let controlPanel = document.getElementsByClassName('control-panel')[0];
-            let controlPanelInner = Array.from(controlPanel.children)[0]
+            let controlPanel = document.getElementsByClassName('control-panel');
+            if (controlPanel.length === 0) {
+                return hs.wrong("Can't find element with class=\"control-panel\"");
+            }
+            let controlPanelInner = Array.from(controlPanel[0].children)[0]
             if (!(controlPanelInner.children.length === 5 &&
                 controlPanelInner.getElementsByTagName('input').length === 14 &&
                 controlPanelInner.getElementsByTagName('div').length === 2
@@ -57,6 +63,9 @@ async function stageTest() {
         //testing types of the check-buttons inputs
         () => {
             let checkBtnsDiv = document.getElementsByClassName("check-buttons");
+            if (checkBtnsDiv.length === 0) {
+                return hs.wrong("Can't find element with class=\"check-buttons\"");
+            }
             let checkBtns = Array.from(checkBtnsDiv[0].children);
             checkBtns.forEach( el => {
                 if (el.tagName.toLowerCase() !== 'input' || el.type.toLowerCase() !== 'checkbox') {
@@ -69,6 +78,9 @@ async function stageTest() {
         //testing types of the levers inputs
         () => {
             let leversDiv = document.getElementsByClassName("levers");
+            if (leversDiv.length === 0) {
+                return hs.wrong("Can't find element with class=\"levers\"");
+            }
             let leversInputs = Array.from(leversDiv[0].children);
             leversInputs.forEach( el => {
                 if (el.tagName.toLowerCase() !== 'input' || el.type.toLowerCase() !== 'range') {
@@ -81,6 +93,9 @@ async function stageTest() {
         //testing background of space
         () => {
             let space = document.getElementsByClassName("space");
+            if (space.length === 0) {
+                return hs.wrong("Can't find element with class=\"space\"");
+            }
             let spaceBg = window.getComputedStyle(space[0]).backgroundImage;
             if (!spaceBg) return hs.wrong("The element with class='space' should have background-image.");
 
@@ -128,7 +143,9 @@ async function stageTest() {
         //testing password field
         () => {
             let controlPanelInner = document.getElementsByClassName('control-panel__inner')[0];
-            let msg = undefined;
+            if (controlPanelInner.length === 0) {
+                return hs.wrong("Can't find element with class=\"control-panel__inner\"");
+            }
             for(let el of Array.from(controlPanelInner.children)){
                 if (el.tagName.toLowerCase() === 'input' && el.type.toLowerCase() === 'password') {
                     let styles = window.getComputedStyle(el);
@@ -170,7 +187,53 @@ async function stageTest() {
             }
 
             return hs.wrong("Can't find the input with type=button or submit with specified border-radius");
+        },
+        //testing that all inputs except password and the "ok" button sre disabled
+        () => {
+            let controlPanelInner = document.getElementsByClassName('control-panel__inner')[0];
+            for (el of Array.from(controlPanelInner.getElementsByTagName('input'))) {
+                if(el.type.toLowerCase() === "password" && el.disabled) {
+                    return hs.wrong("Password field should be enabled.")
+                }
+
+                if(el.value.toLowerCase() === "ok" && el.disabled) {
+                        return hs.wrong("Ok button should be enabled.");
+                }
+
+                if (el.type.toLowerCase() !== "password" &&
+                    el.value.toLowerCase() !== "ok"  && !el.disabled) {
+                        return hs.wrong("All inputs except password and the ok button should be disabled.");
+                }
+            }
+
+            return hs.correct();
+        },
+        () => {
+            let controlPanelInner = document.getElementsByClassName('control-panel__inner')[0];
+            let allInputs = Array.from(controlPanelInner.getElementsByTagName('input'));
+            let passwordEl =allInputs.filter( el => el.type.toLowerCase() === "password");
+
+            passwordEl[0].value = "TrustNo1";
+            window.setTimeout(() => {
+                for (el of allInputs) {
+                    if(el.type.toLowerCase() === "password" && !el.disabled) {
+                        return hs.wrong("Password field should be disabled.")
+                    }
+
+                    if(el.value.toLowerCase() === "ok" && !el.disabled) {
+                        return hs.wrong("Ok button should be disabled.");
+                    }
+
+                    if (el.type.toLowerCase() !== "password" &&
+                        el.value.toLowerCase() !== "ok"  && el.disabled) {
+                        return hs.wrong("All inputs except password and the ok button should be enabled.");
+                    }
+                }
+            }, 1000)
+
+            return hs.correct();
         }
+
     )
 
     await browser.close();

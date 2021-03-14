@@ -4,6 +4,27 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="main.css"/>
     <title>Open Space</title>
+    <script>
+        function DisableButton() {
+            document.getElementById("check-buttons").querySelectorAll("input").forEach(el => el.disabled = true);
+            document.getElementById("levers").querySelectorAll("input").forEach(el => el.disabled = true);
+            document.getElementById("launch-button").disabled = true;
+            console.log("DisableButton");
+        }
+        window.onload = DisableButton;
+        document.getElementById("ok-button").addEventListener("click", function () {
+            console.log("ok-button clicked");
+            let passwordInput = document.getElementById("password");
+            let password = passwordInput.value;
+            if (password === "TrustNo1") {
+                document.getElementById("check-buttons").querySelectorAll("input").forEach(el => el.disabled = false);
+                document.getElementById("levers").querySelectorAll("input").forEach(el => el.disabled = false);
+                document.getElementById("launch-button").disabled = false;
+                passwordInput.disabled = true;
+                document.getElementById("ok-button").disabled = true;
+            }
+        });
+    </script>
 </head>
 <body>
 <div class="space">
@@ -13,9 +34,9 @@
     </div>
     <div class="control-panel">
         <div class="control-panel__inner">
-            <input type="password" placeholder="Enter password to unlock">
+            <input type="password" id="password" placeholder="Enter password to unlock">
             <input type="button" id="ok-button" value="OK">
-            <div class="check-buttons">
+            <div class="check-buttons" id="check-buttons">
                 <input type="checkbox">
                 <input type="checkbox">
                 <input type="checkbox">
@@ -23,14 +44,14 @@
                 <input type="checkbox">
                 <input type="checkbox">
             </div>
-            <div class="levers">
+            <div class="levers" id="levers">
                 <input type="range">
                 <input type="range">
                 <input type="range">
                 <input type="range">
                 <input type="range">
             </div>
-            <input type="button" id="launch-button" value="Launch">
+            <input type="button" id="launch-button" value="Launch" disabled>
         </div>
     </div>
 </div>
