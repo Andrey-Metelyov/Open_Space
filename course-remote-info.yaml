@@ -3,7 +3,7 @@ hyperskill_project:
   ide_files: https://stepik.org/media/attachments/lesson/452681/additional_files.json
   is_template_based: false
   use_ide: true
-update_date: Sun, 14 Mar 2021 15:11:13 UTC
+update_date: Thu, 25 Mar 2021 11:51:29 UTC
 stages:
 - id: 771
   step: 11733
@@ -19,7 +19,7 @@ stages:
   is_completed: true
 - id: 775
   step: 11737
-  is_completed: false
+  is_completed: true
 topics:
   0:
   - title: IDE
@@ -84,18 +84,18 @@ topics:
   - title: Pseudo-classes
     theory_id: 9762
   2:
+  - title: Comments
+    theory_id: 8170
+  - title: Naming variables
+    theory_id: 8364
   - title: Introduction to JavaScript
     theory_id: 8016
   - title: Overview of the basic program
     theory_id: 8154
   - title: Multi-line programs
     theory_id: 8162
-  - title: Comments
-    theory_id: 8170
   - title: Variables
     theory_id: 8186
-  - title: Naming variables
-    theory_id: 8364
   - title: Strings and numbers
     theory_id: 8194
   - title: Boolean and logical operators
@@ -107,10 +107,18 @@ topics:
     theory_id: 7510
   - title: DOM
     theory_id: 8635
-  - title: Introduction to Objects
-    theory_id: 8588
   - title: Functions
     theory_id: 8388
+  - title: DOM methods
+    theory_id: 8662
+  - title: DOM events
+    theory_id: 10857
+  - title: The "addEventListener" method
+    theory_id: 8723
+  - title: Arrays
+    theory_id: 9110
+  - title: Introduction to Objects
+    theory_id: 8588
   - title: Increment and decrement
     theory_id: 9102
   - title: Null and Undefined
@@ -121,14 +129,6 @@ topics:
     theory_id: 8580
   - title: Conditional operators
     theory_id: 8889
-  - title: DOM methods
-    theory_id: 8662
-  - title: DOM events
-    theory_id: 10857
-  - title: The "addEventListener" method
-    theory_id: 8723
-  - title: Arrays
-    theory_id: 9110
   - title: For loops
     theory_id: 9119
   4:
